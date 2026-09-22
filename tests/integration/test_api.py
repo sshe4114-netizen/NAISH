@@ -85,3 +85,19 @@ def test_stats_extension_counts_predictions() -> None:
         after = client.get("/v1/stats").json()["data"]["predictions_processed"]
 
     assert after == before + 1
+
+
+class NotReadyStore:
+    def is_ready(self) -> bool:
+        return False
+
+
+def test_ready_returns_503_when_supporting_service_is_unavailable() -> None:
+    with make_client() as client:
+        original_store = client.app.state.store
+        client.app.state.store = NotReadyStore()
+        response = client.get("/ready")
+        client.app.state.store = original_store
+
+    assert response.status_code == 503
+    assert response.json()["error"]["code"] == "not_ready"

@@ -44,3 +44,11 @@ def test_prediction_service_returns_decision_and_tracks_count() -> None:
     assert result.default_probability == 0.20
     assert result.decision is Decision.AUTO_APPROVE
     assert service.prediction_count() == 1
+
+
+def test_manual_review_probability_maps_correctly() -> None:
+    service = PredictCreditRisk(FakeModel(0.40), FakeStore())
+
+    result = service.execute(CreditRiskInput(40_000.0, 18))
+
+    assert result.decision is Decision.MANUAL_REVIEW
