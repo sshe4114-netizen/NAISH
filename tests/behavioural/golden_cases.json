@@ -1,0 +1,20 @@
+[
+  {
+    "monthly_cash_flow_sar": 10000,
+    "registration_age_months": 6,
+    "expected_probability": 0.806279,
+    "expected_decision": "reject"
+  },
+  {
+    "monthly_cash_flow_sar": 50000,
+    "registration_age_months": 24,
+    "expected_probability": 0.610547,
+    "expected_decision": "reject"
+  },
+  {
+    "monthly_cash_flow_sar": 150000,
+    "registration_age_months": 60,
+    "expected_probability": 0.135792,
+    "expected_decision": "auto_approve"
+  }
+]
