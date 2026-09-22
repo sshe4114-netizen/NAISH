@@ -178,3 +178,11 @@ make run
 - `.env.example` — safe configuration template
 - `docker-compose.yml` — API + Redis demo stack
 - `.github/workflows/ci.yml` — complete CI/CD pipeline
+
+This project was completed as part of the SDA-AIE-113 — Software Engineering Practices for AI Systems training program at SDAIA Academy, under the supervision of Abdullah Khalid AlShahrani.
+
+The portfolio demonstrates the practical application of software engineering practices for AI systems — building a production-style AI/ML service through clean architecture, a well-defined API contract, containerization, a layered automated testing suite, a CI/CD pipeline with branch protection, and safe configuration, secrets, and logging management.
+
+Official SDAIA Academy GitHub:
+
+https://github.com/SDAIAAcademy
