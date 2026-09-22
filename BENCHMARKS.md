@@ -6,7 +6,7 @@ Measurements below were produced from this repository on 22 September 2026.
 | --- | ---: | --- |
 | Training rows | 4000 | `wc -l data/nasih_training.csv` |
 | Model artifact size | 1631 bytes | `stat -c%s artifacts/nasih_model.joblib` |
-| Full test suite time | 6.53 seconds | `pytest -q` |
+| Full test suite time | 7.10 seconds | `pytest -q` |
 | Core branch coverage | 100% | `pytest -q` |
 | Docker image size | Not measured here | `docker image inspect naish:local --format='{{.Size}}'` |
 | Docker build time | Not measured here | `time docker build -t naish:local .` |
