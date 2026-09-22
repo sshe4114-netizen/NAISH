@@ -2,9 +2,6 @@ from __future__ import annotations
 
 from threading import Lock
 
-from redis import Redis
-
-
 class InMemoryPredictionStore:
     def __init__(self) -> None:
         self._count = 0
@@ -30,6 +27,8 @@ class RedisPredictionStore:
     KEY = "naish:predictions:count"
 
     def __init__(self, redis_url: str) -> None:
+        from redis import Redis
+
         self._client = Redis.from_url(redis_url, decode_responses=True, socket_connect_timeout=2)
 
     def increment_predictions(self) -> int:
