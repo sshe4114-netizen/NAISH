@@ -1,20 +1,15 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from uuid import uuid4
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from starlette.responses import Response
 
-from naish.adapters.sklearn_model import SklearnRiskModel
-from naish.adapters.stores import InMemoryPredictionStore, RedisPredictionStore
-from naish.config import Settings
-from naish.domain.models import CreditRiskInput
-from naish.service.ports import PredictionStore
-from naish.service.predict import PredictCreditRisk
 from naish.api.logging import configure_logging
 from naish.api.schemas import (
     ErrorData,
@@ -26,7 +21,12 @@ from naish.api.schemas import (
     StatusData,
     StatusResponse,
 )
-
+from naish.adapters.sklearn_model import SklearnRiskModel
+from naish.adapters.stores import InMemoryPredictionStore, RedisPredictionStore
+from naish.config import Settings
+from naish.domain.models import CreditRiskInput
+from naish.service.ports import PredictionStore
+from naish.service.predict import PredictCreditRisk
 logger = logging.getLogger(__name__)
 
 
@@ -62,7 +62,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app = FastAPI(title="Nasih Credit Risk Service", version="1.0.0", lifespan=lifespan)
 
     @app.middleware("http")
-    async def trace_middleware(request: Request, call_next):  # type: ignore[no-untyped-def]
+    async def trace_middleware(
+        request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    ) -> Response:
         request.state.trace_id = request.headers.get("X-Trace-ID", str(uuid4()))
         response = await call_next(request)
         response.headers["X-Trace-ID"] = request.state.trace_id
@@ -129,7 +131,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             trace_id=_trace_id(request),
             data=PredictionData(
                 default_probability=result.default_probability,
-                decision=result.decision.value,
+                decision=result.decision,
             ),
             error=None,
         )

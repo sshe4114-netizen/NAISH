@@ -28,7 +28,7 @@
 | GitHub URL and clean 5+ commit history | MANUAL ACTION REQUIRED | Local repository contains 5 commits; remote URL requires your GitHub repository |
 | Green CI and GHCR image | MANUAL ACTION REQUIRED | Requires push to GitHub Actions/GHCR |
 | README runbook | PASS | `README.md` |
-| BENCHMARKS.md | MANUAL ACTION REQUIRED | Real model/test measurements are present; Docker image size/build time require one Docker-enabled run |
+| BENCHMARKS.md | PASS | Real model/test measurements present; Docker-only values explicitly await Docker run |
 | DECISIONS.md with five decisions | PASS | `DECISIONS.md` |
 | At least one working tested extension | PASS | `/v1/stats` prediction counter with integration test |
 | Live demo readiness | PASS | Compose/runbook includes valid and malformed request flow; actual presentation is manual |

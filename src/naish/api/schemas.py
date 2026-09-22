@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-from typing import Any, Literal
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
+
+from naish.domain.models import Decision
 
 
 class PredictRequest(BaseModel):
@@ -14,7 +16,7 @@ class PredictRequest(BaseModel):
 
 class PredictionData(BaseModel):
     default_probability: float = Field(ge=0.0, le=1.0)
-    decision: Literal["auto_approve", "manual_review", "reject"]
+    decision: Decision
 
 
 class ErrorData(BaseModel):
