@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "naish"
+version = "0.1.0"
+description = "Nasih credit-risk scoring service for small businesses"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "fastapi==0.128.2",
+  "uvicorn[standard]==0.40.0",
+  "pydantic==2.13.4",
+  "pydantic-settings==2.11.0",
+  "numpy==2.2.6",
+  "scikit-learn==1.8.0",
+  "joblib==1.5.2",
+  "redis==6.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx==0.28.1",
+  "pytest==8.4.2",
+  "pytest-cov==6.2.1",
+  "ruff==0.12.12",
+  "mypy==1.18.1",
+  "import-linter==2.5",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --cov=naish.domain --cov=naish.service --cov-branch --cov-report=term-missing --cov-fail-under=80"
+markers = [
+  "unit: fast isolated tests",
+  "integration: API and adapter integration tests",
+  "behavioural: tests against the real trained model",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["naish"]
+
+[tool.importlinter]
+root_packages = ["naish"]
+
+[[tool.importlinter.contracts]]
+name = "Domain does not depend on outer layers"
+type = "forbidden"
+source_modules = ["naish.domain"]
+forbidden_modules = ["naish.service", "naish.adapters", "naish.api"]
+
+[[tool.importlinter.contracts]]
+name = "Service does not depend on adapters or api"
+type = "forbidden"
+source_modules = ["naish.service"]
+forbidden_modules = ["naish.adapters", "naish.api"]
+
+[[tool.importlinter.contracts]]
+name = "Adapters do not depend on api"
+type = "forbidden"
+source_modules = ["naish.adapters"]
+forbidden_modules = ["naish.api"]
